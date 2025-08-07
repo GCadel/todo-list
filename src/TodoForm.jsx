@@ -20,7 +20,7 @@ export default function TodoForm({ onAddTodo }) {
         value={workingTodoTitle}
         onChange={(event) => setWorkingTodoTitle(event.target.value)}
       />
-      <button>Add Todo</button>
+      <button disabled={workingTodoTitle == ''}>Add Todo</button>
     </form>
   );
 }
