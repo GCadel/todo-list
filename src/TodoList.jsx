@@ -1,12 +1,21 @@
 import TodoListItem from './TodoListItem';
 
-export default function TodoList({ todoList }) {
+export default function TodoList({ todoList = [], onCompleteTodo }) {
+  const filtered = todoList.filter((item) => {
+    if (!item.isCompleted) {
+      return item;
+    }
+  });
   return (
     <>
-      {todoList.length > 0 ? (
+      {filtered.length > 0 ? (
         <ul>
-          {todoList.map((todo) => (
-            <TodoListItem key={todo.id} todo={todo} />
+          {filtered.map((todo) => (
+            <TodoListItem
+              key={todo.id}
+              todo={todo}
+              onCompleteTodo={onCompleteTodo}
+            />
           ))}
         </ul>
       ) : (
