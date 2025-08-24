@@ -36,7 +36,7 @@ function App() {
       setIsSaving(true);
       const resp = await fetch(url, options);
       if (!resp.ok) {
-        throw await resp.json();
+        throw new Error();
       }
       const { records } = await resp.json();
       const savedTodo = {
@@ -48,7 +48,7 @@ function App() {
       }
       setTodoList([...todoList, savedTodo]);
     } catch (error) {
-      setErrorMessage(error.error.message);
+      setErrorMessage(error.message);
     } finally {
       setIsSaving(false);
     }
@@ -68,7 +68,7 @@ function App() {
       try {
         const resp = await fetch(url, options);
         if (!resp.ok) {
-          throw new Error((await resp.json()).error.message);
+          throw new Error();
         }
         const records = (await resp.json()).records;
         const formattedRecords = records.map((record) => {
@@ -93,7 +93,8 @@ function App() {
     fetchTodos();
   }, []);
 
-  function updateTodo(editedTodo) {
+  async function updateTodo(editedTodo) {
+    const originalTodo = todoList.find((item) => item.id == editedTodo.id);
     const updatedTodos = todoList.map((item) => {
       if (item.id == editedTodo.id) {
         return { ...editedTodo };
@@ -101,7 +102,48 @@ function App() {
         return item;
       }
     });
-    setTodoList(updatedTodos);
+
+    const payload = {
+      records: [
+        {
+          id: editedTodo.id,
+          fields: {
+            title: editedTodo.title,
+            isCompleted: editedTodo.isCompleted,
+          },
+        },
+      ],
+    };
+    const options = {
+      method: 'PATCH',
+      headers: {
+        Authorization: token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    try {
+      setIsSaving(true);
+      const resp = await fetch(url, options);
+      if (!resp.ok) {
+        throw new Error();
+      }
+      setTodoList(updatedTodos);
+    } catch (error) {
+      console.log(error);
+      setErrorMessage(`${error.message}. Reverting todo...`);
+      const revertedTodos = updatedTodos.map((item) => {
+        if (item.id == editedTodo.id) {
+          return originalTodo;
+        } else {
+          return item;
+        }
+      });
+      setTodoList([...revertedTodos]);
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   function completeTodo(id) {
