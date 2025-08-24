@@ -3,7 +3,7 @@ import './App.css';
 import TodoForm from './features/TodoForm';
 import TodoList from './features/TodoList/TodoList';
 
-const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/Todos?maxRecords=3&view=Grid%20view`;
+const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}?maxRecords=3&view=Grid%20view`;
 const token = `Bearer ${import.meta.env.VITE_PAT}`;
 const options = {
   method: 'GET',
@@ -28,10 +28,9 @@ function App() {
       try {
         const resp = await fetch(url, options);
         if (!resp.ok) {
-          throw new Error(resp.message);
+          throw new Error((await resp.json()).error.message);
         }
-        const res = await resp.json();
-        const records = res.records;
+        const records = (await resp.json()).records;
         const formattedRecords = records.map((record) => {
           const todo = {
             id: record.id,
@@ -84,7 +83,15 @@ function App() {
         onCompleteTodo={completeTodo}
         todoList={todoList}
         onUpdateTodo={updateTodo}
+        isLoading={isLoading}
       />
+      {errorMessage != '' && (
+        <div>
+          <hr />
+          <p>{errorMessage}</p>
+          <button onClick={() => setErrorMessage('')}>OK</button>
+        </div>
+      )}
     </div>
   );
 }
