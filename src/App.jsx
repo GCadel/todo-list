@@ -6,6 +6,50 @@ import TodoList from './features/TodoList/TodoList';
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
+function createOptions(method, payload) {
+  const options = {
+    method: method,
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+  };
+
+  if (payload) {
+    options.body = JSON.stringify(payload);
+  }
+
+  return options;
+}
+
+function createPayload(title, isCompleted, id) {
+  const payload = {
+    records: [
+      {
+        fields: {
+          title: title,
+          isCompleted: isCompleted,
+        },
+      },
+    ],
+  };
+
+  if (id) {
+    payload.records[0].id = id;
+  }
+
+  return payload;
+}
+
+async function fetchData(options) {
+  const resp = options ? await fetch(url, options) : await fetch(url);
+
+  if (!resp.ok) {
+    throw new Error();
+  }
+  return await resp.json();
+}
+
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,31 +58,13 @@ function App() {
 
   async function addTodo(title) {
     const newTodo = { title: title, id: Date.now(), isCompleted: false };
-    const payload = {
-      records: [
-        {
-          fields: {
-            title: newTodo.title,
-            isCompleted: newTodo.isCompleted,
-          },
-        },
-      ],
-    };
-    const options = {
-      method: 'POST',
-      headers: {
-        Authorization: token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    };
+    const payload = createPayload(newTodo.title, newTodo.isCompleted);
+    const options = createOptions('POST', payload);
+
     try {
       setIsSaving(true);
-      const resp = await fetch(url, options);
-      if (!resp.ok) {
-        throw new Error();
-      }
-      const { records } = await resp.json();
+      const resp = await fetchData(options);
+      const { records } = resp;
       const savedTodo = {
         id: records[0].id,
         ...records[0].fields,
@@ -57,20 +83,10 @@ function App() {
   useEffect(() => {
     const fetchTodos = async () => {
       setIsLoading(true);
-      const options = {
-        method: 'GET',
-        headers: {
-          Authorization: token,
-          'Content-Type': 'application/json',
-        },
-      };
-
+      const options = createOptions('GET');
       try {
-        const resp = await fetch(url, options);
-        if (!resp.ok) {
-          throw new Error();
-        }
-        const records = (await resp.json()).records;
+        const resp = await fetchData(options);
+        const { records } = resp;
         const formattedRecords = records.map((record) => {
           const todo = {
             id: record.id,
@@ -103,32 +119,17 @@ function App() {
       }
     });
 
-    const payload = {
-      records: [
-        {
-          id: editedTodo.id,
-          fields: {
-            title: editedTodo.title,
-            isCompleted: editedTodo.isCompleted,
-          },
-        },
-      ],
-    };
-    const options = {
-      method: 'PATCH',
-      headers: {
-        Authorization: token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    };
+    const payload = createPayload(
+      editedTodo.title,
+      editedTodo.isCompleted,
+      editedTodo.id
+    );
+
+    const options = createOptions('PATCH', payload);
     setTodoList(updatedTodos);
     try {
       setIsSaving(true);
-      const resp = await fetch(url, options);
-      if (!resp.ok) {
-        throw new Error();
-      }
+      await fetchData(options);
     } catch (error) {
       console.log(error);
       setErrorMessage(`${error.message}. Reverting todo...`);
@@ -153,32 +154,13 @@ function App() {
       } else return item;
     });
 
-    const payload = {
-      records: [
-        {
-          id: originalTodo.id,
-          fields: {
-            title: originalTodo.title,
-            isCompleted: true,
-          },
-        },
-      ],
-    };
-    const options = {
-      method: 'PATCH',
-      headers: {
-        Authorization: token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    };
+    const payload = createPayload(originalTodo.title, true, originalTodo.id);
+    const options = createOptions('PATCH', payload);
+
     setTodoList([...updatedTodos]);
     try {
       setIsSaving(true);
-      const resp = await fetch(url, options);
-      if (!resp.ok) {
-        throw new Error();
-      }
+      await fetchData(options);
     } catch (error) {
       console.log(error);
       setErrorMessage(`${error.message}. Reverting todo...`);
