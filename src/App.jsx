@@ -178,7 +178,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="todo-app">
       <h1>My Todos</h1>
       <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
 
@@ -192,7 +192,9 @@ function App() {
         <div>
           <hr />
           <p>{errorMessage}</p>
-          <button onClick={() => setErrorMessage('')}>OK</button>
+          <button className="error" onClick={() => setErrorMessage('')}>
+            OK
+          </button>
         </div>
       )}
     </div>
