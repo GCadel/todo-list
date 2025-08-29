@@ -1,0 +1,164 @@
+:root {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --padding-sm: 0.5rem;
+  --base-color: hsl(264, 72%, 54%);
+  background-color: hsl(from var(--base-color) h s l);
+  color: rgb(67, 67, 67);
+  --heading-color: rgb(37, 38, 38);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  box-sizing: border-box;
+}
+
+#root {
+  display: grid;
+  place-content: center;
+  min-height: 100dvh;
+}
+
+.todo-app {
+  background-color: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--spacing-sm);
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.49);
+  margin: var(--padding-sm);
+}
+
+.todo-app > h1 {
+  text-align: center;
+  background-color: hsl(from var(--base-color) h s calc(l + 10));
+  padding: var(--spacing-md) 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--heading-color);
+}
+
+.todo-app > form {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem var(--spacing-sm);
+}
+.todo-app > form input {
+  flex-grow: 1;
+}
+
+.todo-app > form label {
+  display: none;
+}
+
+.todo-app li:has(form button) {
+  background-color: inherit;
+}
+
+.todo-app li form:has(button) {
+  display: grid;
+  column-gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 48px 48px;
+  background-color: #f3f3f3;
+
+  outline: solid black 1px;
+}
+
+.todo-app li form:has(button) label {
+  display: none;
+}
+.todo-app li form:has(button) input {
+  grid-column: span 2;
+}
+.todo-app li form:has(button) button {
+  grid-column: span 1;
+  grid-row: 2 / 3;
+}
+
+.todo-app li form:has(button) button:last-of-type {
+  background-color: rgb(198, 242, 255);
+  color: rgb(7, 145, 191);
+}
+
+.todo-app li {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  background-color: hsl(from var(--base-color) h s calc(l + 40));
+  margin: 0 var(--spacing-sm);
+}
+
+.todo-app ul > li:nth-child(2n) {
+  background-color: hsl(from var(--base-color) h s calc(l + 50));
+}
+
+.todo-app li form {
+  justify-self: stretch;
+  align-self: center;
+  width: 100%;
+}
+
+.todo-app > form button:not(:disabled) {
+  background-color: rgb(192, 255, 192);
+  color: rgb(9, 117, 9);
+}
+
+.todo-app > div:last-of-type {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+input {
+  font-size: inherit;
+  padding: 0 var(--padding-sm);
+  outline: none;
+  border: rgb(176, 176, 176) solid 1px;
+  /* min-height: 48px; */
+  background-color: white;
+}
+
+input[type='checkbox'] {
+  margin-right: var(--padding-sm);
+  margin-left: var(--padding-sm);
+  align-self: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+button {
+  font-size: inherit;
+  border: none;
+  padding: 0.5rem 0.5rem;
+  font-weight: 600;
+  background-color: transparent;
+}
+
+button:not(:disabled):hover {
+  cursor: pointer;
+}
+
+button:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+p {
+  text-align: center;
+}
+
+.error {
+  color: rgb(189, 0, 0);
+  background-color: rgb(249, 191, 191);
+}

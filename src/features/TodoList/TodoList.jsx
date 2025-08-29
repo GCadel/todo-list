@@ -4,6 +4,7 @@ export default function TodoList({
   todoList = [],
   onCompleteTodo,
   onUpdateTodo,
+  isLoading,
 }) {
   const filtered = todoList.filter((item) => {
     if (!item.isCompleted) {
@@ -24,7 +25,11 @@ export default function TodoList({
           ))}
         </ul>
       ) : (
-        <p>Add todo above to get started</p>
+        <p>
+          {isLoading
+            ? 'Todo list loading...'
+            : 'Add todo above to get started.'}
+        </p>
       )}
     </>
   );
