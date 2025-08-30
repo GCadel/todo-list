@@ -3,19 +3,36 @@ import './App.css';
 import TodoForm from './features/TodoForm';
 import TodoList from './features/TodoList/TodoList';
 import { addTodo, completeTodo, getAllTodos, updateTodo } from './utils/api';
+import TodosViewForm from './features/TodosViewForm';
 
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [sortField, setSortField] = useState('createdTime');
+  const [sortDirection, setSortDirection] = useState('desc');
 
   useEffect(() => {
-    getAllTodos(setTodoList, setIsLoading, setErrorMessage);
-  }, []);
+    getAllTodos(
+      setTodoList,
+      setIsLoading,
+      setErrorMessage,
+      sortField,
+      sortDirection
+    );
+  }, [sortField, sortDirection]);
 
   async function handleAddTodo(title) {
-    await addTodo(title, todoList, setTodoList, setIsSaving, setErrorMessage);
+    await addTodo(
+      title,
+      todoList,
+      setTodoList,
+      setIsSaving,
+      setErrorMessage,
+      sortField,
+      sortDirection
+    );
   }
 
   async function handleUpdateTodo(editedTodo) {
@@ -24,12 +41,22 @@ function App() {
       todoList,
       setTodoList,
       setIsSaving,
-      setErrorMessage
+      setErrorMessage,
+      sortField,
+      sortDirection
     );
   }
 
   async function handleCompleteTodo(id) {
-    await completeTodo(id, todoList, setTodoList, setIsSaving, setErrorMessage);
+    await completeTodo(
+      id,
+      todoList,
+      setTodoList,
+      setIsSaving,
+      setErrorMessage,
+      sortField,
+      sortDirection
+    );
   }
 
   return (
@@ -42,6 +69,13 @@ function App() {
         todoList={todoList}
         onUpdateTodo={handleUpdateTodo}
         isLoading={isLoading}
+      />
+      <hr />
+      <TodosViewForm
+        setSortDirection={setSortDirection}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        sortField={sortField}
       />
       {errorMessage != '' && (
         <div>

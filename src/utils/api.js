@@ -1,8 +1,15 @@
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
-async function fetchData(options) {
-  const resp = options ? await fetch(url, options) : await fetch(url);
+function encodeUrl(sortField, sortDirection) {
+  let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+  return encodeURI(`${url}?${sortQuery}`);
+}
+
+async function fetchData(options, sortField, sortDirection) {
+  const resp = options
+    ? await fetch(encodeUrl(sortField, sortDirection), options)
+    : await fetch(encodeUrl(sortField, sortDirection));
 
   if (!resp.ok) {
     throw new Error();
@@ -45,11 +52,17 @@ function createOptions(method, payload) {
   return options;
 }
 
-export async function getAllTodos(setTodoList, setIsLoading, setErrorMessage) {
+export async function getAllTodos(
+  setTodoList,
+  setIsLoading,
+  setErrorMessage,
+  sortField,
+  sortDirection
+) {
   setIsLoading(true);
   const options = createOptions('GET');
   try {
-    const resp = await fetchData(options);
+    const resp = await fetchData(options, sortField, sortDirection);
     const { records } = resp;
     const formattedRecords = records.map((record) => {
       const todo = {
@@ -76,7 +89,9 @@ export async function addTodo(
   todoList,
   setTodoList,
   setIsSaving,
-  setErrorMessage
+  setErrorMessage,
+  sortField,
+  sortDirection
 ) {
   const newTodo = { title: title, id: Date.now(), isCompleted: false };
   const payload = createPayload(newTodo.title, newTodo.isCompleted);
@@ -84,7 +99,7 @@ export async function addTodo(
 
   try {
     setIsSaving(true);
-    const resp = await fetchData(options);
+    const resp = await fetchData(options, sortField, sortDirection);
     const { records } = resp;
     const savedTodo = {
       id: records[0].id,
@@ -106,7 +121,9 @@ export async function updateTodo(
   todoList,
   setTodoList,
   setIsSaving,
-  setErrorMessage
+  setErrorMessage,
+  sortField,
+  sortDirection
 ) {
   const originalTodo = todoList.find((item) => item.id == editedTodo.id);
   const updatedTodos = todoList.map((item) => {
@@ -127,7 +144,7 @@ export async function updateTodo(
   setTodoList(updatedTodos);
   try {
     setIsSaving(true);
-    await fetchData(options);
+    await fetchData(options, sortField, sortDirection);
   } catch (error) {
     console.log(error);
     setErrorMessage(`${error.message}. Reverting todo...`);
@@ -149,7 +166,9 @@ export async function completeTodo(
   todoList,
   setTodoList,
   setIsSaving,
-  setErrorMessage
+  setErrorMessage,
+  sortField,
+  sortDirection
 ) {
   const originalTodo = todoList.find((item) => item.id == id);
   const updatedTodos = todoList.map((item) => {
@@ -164,7 +183,7 @@ export async function completeTodo(
   setTodoList([...updatedTodos]);
   try {
     setIsSaving(true);
-    await fetchData(options);
+    await fetchData(options, sortField, sortDirection);
   } catch (error) {
     console.log(error);
     setErrorMessage(`${error.message}. Reverting todo...`);
