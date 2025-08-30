@@ -12,6 +12,7 @@ function App() {
   const [isSaving, setIsSaving] = useState(false);
   const [sortField, setSortField] = useState('createdTime');
   const [sortDirection, setSortDirection] = useState('desc');
+  const [queryString, setQueryString] = useState('');
 
   useEffect(() => {
     getAllTodos(
@@ -19,9 +20,10 @@ function App() {
       setIsLoading,
       setErrorMessage,
       sortField,
-      sortDirection
+      sortDirection,
+      queryString
     );
-  }, [sortField, sortDirection]);
+  }, [sortField, sortDirection, queryString]);
 
   async function handleAddTodo(title) {
     await addTodo(
@@ -31,7 +33,8 @@ function App() {
       setIsSaving,
       setErrorMessage,
       sortField,
-      sortDirection
+      sortDirection,
+      queryString
     );
   }
 
@@ -43,7 +46,8 @@ function App() {
       setIsSaving,
       setErrorMessage,
       sortField,
-      sortDirection
+      sortDirection,
+      queryString
     );
   }
 
@@ -55,7 +59,8 @@ function App() {
       setIsSaving,
       setErrorMessage,
       sortField,
-      sortDirection
+      sortDirection,
+      queryString
     );
   }
 
@@ -76,6 +81,8 @@ function App() {
         setSortField={setSortField}
         sortDirection={sortDirection}
         sortField={sortField}
+        queryString={queryString}
+        setQueryString={setQueryString}
       />
       {errorMessage != '' && (
         <div>
