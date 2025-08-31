@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import TodoForm from './features/TodoForm';
 import TodoList from './features/TodoList/TodoList';
-import { addTodo, completeTodo, getAllTodos, updateTodo } from './utils/api';
+import { addTodo, getAllTodos, updateTodo } from './utils/api';
 import TodosViewForm from './features/TodosViewForm';
 
 function App() {
@@ -40,6 +40,7 @@ function App() {
 
   async function handleUpdateTodo(editedTodo) {
     await updateTodo(
+      false,
       editedTodo,
       todoList,
       setTodoList,
@@ -51,9 +52,10 @@ function App() {
     );
   }
 
-  async function handleCompleteTodo(id) {
-    await completeTodo(
-      id,
+  async function handleCompleteTodo(editedTodo) {
+    await updateTodo(
+      true,
+      editedTodo,
       todoList,
       setTodoList,
       setIsSaving,

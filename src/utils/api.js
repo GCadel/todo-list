@@ -126,13 +126,14 @@ export async function addTodo(
     }
     setTodoList([...todoList, savedTodo]);
   } catch (error) {
-    setErrorMessage(error.message);
+    setErrorMessage('Failed to create new todo.');
   } finally {
     setIsSaving(false);
   }
 }
 
 export async function updateTodo(
+  markComplete,
   editedTodo,
   todoList,
   setTodoList,
@@ -143,19 +144,22 @@ export async function updateTodo(
   queryString
 ) {
   const originalTodo = todoList.find((item) => item.id == editedTodo.id);
+  let updated;
   const updatedTodos = todoList.map((item) => {
     if (item.id == editedTodo.id) {
-      return { ...editedTodo };
+      updated = { ...editedTodo };
+
+      if (markComplete) {
+        updated.isCompleted = true;
+      }
+
+      return { ...updated };
     } else {
       return item;
     }
   });
 
-  const payload = createPayload(
-    editedTodo.title,
-    editedTodo.isCompleted,
-    editedTodo.id
-  );
+  const payload = createPayload(updated.title, updated.isCompleted, updated.id);
 
   const options = createOptions('PATCH', payload);
   setTodoList(updatedTodos);
@@ -164,49 +168,18 @@ export async function updateTodo(
     await fetchData(options, sortField, sortDirection, queryString);
   } catch (error) {
     console.log(error);
-    setErrorMessage(`${error.message}. Reverting todo...`);
+
+    if (markComplete) {
+      setErrorMessage('Failed to mark todo as complete. Reverting todo...');
+      originalTodo.isCompleted = false;
+    } else {
+      setErrorMessage(`Failed to update todo info. Reverting todo...`);
+    }
     const revertedTodos = updatedTodos.map((item) => {
-      if (item.id == editedTodo.id) {
-        return originalTodo;
-      } else {
-        return item;
-      }
-    });
-    setTodoList([...revertedTodos]);
-  } finally {
-    setIsSaving(false);
-  }
-}
-
-export async function completeTodo(
-  id,
-  todoList,
-  setTodoList,
-  setIsSaving,
-  setErrorMessage,
-  sortField,
-  sortDirection,
-  queryString
-) {
-  const originalTodo = todoList.find((item) => item.id == id);
-  const updatedTodos = todoList.map((item) => {
-    if (item.id == id) {
-      return { ...item, isCompleted: true };
-    } else return item;
-  });
-
-  const payload = createPayload(originalTodo.title, true, originalTodo.id);
-  const options = createOptions('PATCH', payload);
-
-  setTodoList([...updatedTodos]);
-  try {
-    setIsSaving(true);
-    await fetchData(options, sortField, sortDirection, queryString);
-  } catch (error) {
-    console.log(error);
-    setErrorMessage(`${error.message}. Reverting todo...`);
-    const revertedTodos = updatedTodos.map((item) => {
-      if (item.id == originalTodo.id) {
+      if (item.id == updated.id) {
+        console.log('Reverting', item.id);
+        console.log(item);
+        console.log(originalTodo);
         return originalTodo;
       } else {
         return item;
