@@ -177,9 +177,6 @@ export async function updateTodo(
     }
     const revertedTodos = updatedTodos.map((item) => {
       if (item.id == updated.id) {
-        console.log('Reverting', item.id);
-        console.log(item);
-        console.log(originalTodo);
         return originalTodo;
       } else {
         return item;
