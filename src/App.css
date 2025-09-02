@@ -4,18 +4,35 @@
   --spacing-sm: 16px;
   --spacing-md: 24px;
   --spacing-lg: 40px;
+  --font-size-extra-large: 1.5rem;
+  --font-size-large: 1.25rem;
+  --font-size-normal: 1rem;
+  --font-size-small: 0.875rem;
   --padding-sm: 0.5rem;
-  --base-color: hsl(264, 72%, 54%);
+  --base-color: hsl(259, 61%, 55%);
   background-color: hsl(from var(--base-color) h s l);
-  color: rgb(67, 67, 67);
-  --heading-color: rgb(37, 38, 38);
+  --font-color-base: hsl(180, 1%, 20%);
+  --font-color-bold: hsl(from var(--font-color-base) h s calc(l - 10));
+  --error-color: hsl(0, 82%, 52%);
+  --accept-color: hsl(120, 77%, 52%);
+  --info-color: hsl(221, 90%, 62%);
+  --neutral-color: hsl(0, 0%, 62%);
 }
 
 * {
   margin: 0;
   padding: 0;
+  color: var(--font-color-base);
   list-style-type: none;
   box-sizing: border-box;
+  font-size: var(--font-size-normal);
+  font-weight: normal;
+}
+
+select,
+option {
+  font-size: var(--font-size-normal);
+  font-weight: normal;
 }
 
 #root {
@@ -28,137 +45,185 @@
   background-color: #f3f3f3;
   display: flex;
   flex-direction: column;
-  padding-bottom: var(--spacing-sm);
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.49);
-  margin: var(--padding-sm);
+  max-width: 450px;
+  position: relative;
+
+  h1 {
+    text-align: center;
+    background-color: hsl(from var(--base-color) h s calc(l + 10));
+    padding: var(--spacing-md) 0;
+    color: var(--font-color-bold);
+    font-weight: bold;
+    font-size: var(--font-size-extra-large);
+  }
 }
 
-.todo-app > h1 {
+.todo-form {
+  display: flex;
+
+  .text-label {
+    flex-grow: 1;
+    span {
+      display: none;
+    }
+  }
+
+  button:not(:disabled) {
+    background-color: hsl(from var(--accept-color) h s calc(l + 30));
+    color: hsl(from var(--accept-color) h s calc(l - 30));
+  }
+}
+
+.text-label {
+  input {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding-left: var(--padding-sm);
+    min-height: 40px;
+  }
+
+  span {
+    display: none;
+  }
+}
+
+.todo-list {
+  /* margin: var(--padding-sm) 0; */
+  .editing {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 40px 40px;
+    place-content: center;
+
+    & .text-label {
+      grid-row: 1 / 2;
+      grid-column: 1 / 3;
+    }
+
+    & button {
+      grid-row: 2 / 3;
+    }
+
+    & .cancel {
+      background-color: hsl(from var(--neutral-color) h s calc(l + 30));
+    }
+
+    & .confirm {
+      background-color: hsl(from var(--info-color) h s calc(l + 30));
+      color: hsl(from var(--info-color) h s calc(l - 30));
+    }
+  }
+
+  .displaying {
+    display: grid;
+    grid-template-columns: 1fr 11fr;
+    align-items: center;
+    padding: var(--padding-sm);
+    gap: var(--padding-sm);
+
+    .todo-item-checkbox {
+      border: solid rgb(87, 87, 87) 2px;
+      border-radius: 50%;
+      aspect-ratio: 1;
+      width: 25px;
+      background-color: #f3f3f3;
+      cursor: pointer;
+      align-self: start;
+    }
+
+    span {
+      grid-column: 2 / 12;
+    }
+
+    .todo-item-checkbox input {
+      opacity: 0;
+      cursor: pointer;
+    }
+  }
+
+  .todo-list-item:nth-child(n) {
+    background-color: hsl(from var(--base-color) h s calc(l + 30));
+  }
+
+  .todo-list-item:nth-child(2n) {
+    background-color: hsl(from var(--base-color) h s calc(l + 40));
+  }
+}
+
+.todo-list-empty {
   text-align: center;
-  background-color: hsl(from var(--base-color) h s calc(l + 10));
-  padding: var(--spacing-md) 0;
+  font-size: var(--font-size-large);
+  padding: var(--padding-sm);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--heading-color);
-}
+.todos-view-form {
+  .query-search-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .sort-by-search-container {
+    padding: var(--padding-sm);
 
-.todo-app > form {
-  display: flex;
-  justify-content: space-between;
-  margin: 1rem var(--spacing-sm);
-}
-.todo-app > form input {
-  flex-grow: 1;
-}
-
-.todo-app > form label {
-  display: none;
-}
-
-.todo-app li:has(form button) {
-  background-color: inherit;
-}
-
-.todo-app li form:has(button) {
-  display: grid;
-  column-gap: 0.5rem;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 48px 48px;
-  background-color: #f3f3f3;
-
-  outline: solid black 1px;
-}
-
-.todo-app li form:has(button) label {
-  display: none;
-}
-.todo-app li form:has(button) input {
-  grid-column: span 2;
-}
-.todo-app li form:has(button) button {
-  grid-column: span 1;
-  grid-row: 2 / 3;
-}
-
-.todo-app li form:has(button) button:last-of-type {
-  background-color: rgb(198, 242, 255);
-  color: rgb(7, 145, 191);
-}
-
-.todo-app li {
-  display: flex;
-  align-items: center;
-  min-height: 48px;
-  background-color: hsl(from var(--base-color) h s calc(l + 40));
-  margin: 0 var(--spacing-sm);
-}
-
-.todo-app ul > li:nth-child(2n) {
-  background-color: hsl(from var(--base-color) h s calc(l + 50));
-}
-
-.todo-app li form {
-  justify-self: stretch;
-  align-self: center;
-  width: 100%;
-}
-
-.todo-app > form button:not(:disabled) {
-  background-color: rgb(192, 255, 192);
-  color: rgb(9, 117, 9);
-}
-
-.todo-app > div:last-of-type {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-input {
-  font-size: inherit;
-  padding: 0 var(--padding-sm);
-  outline: none;
-  border: rgb(176, 176, 176) solid 1px;
-  /* min-height: 48px; */
-  background-color: white;
-}
-
-input[type='checkbox'] {
-  margin-right: var(--padding-sm);
-  margin-left: var(--padding-sm);
-  align-self: center;
-  overflow: hidden;
-  cursor: pointer;
+    /* display: flex;
+    flex-direction: column; */
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: var(--padding-sm);
+  }
 }
 
 button {
-  font-size: inherit;
-  border: none;
-  padding: 0.5rem 0.5rem;
-  font-weight: 600;
-  background-color: transparent;
-}
-
-button:not(:disabled):hover {
+  color: hsl(from var(--neutral-color) h s calc(l - 30));
+  background-color: inherit;
   cursor: pointer;
 }
 
-button:not(:disabled):active {
-  transform: scale(0.95);
+button:disabled,
+.saving {
+  cursor: initial;
+  opacity: 60%;
+  color: hsl(from var(--neutral-color) h s calc(l - 30));
+  background-color: hsl(from var(--neutral-color) h s calc(l + 30));
 }
 
-p {
+.error-popup {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: #f3f3f33a;
+  backdrop-filter: blur(8px);
+  bottom: 0;
+  top: 0;
+  display: grid;
+  place-content: center;
+  outline: dashed black 2px;
+}
+
+.error-container {
+  padding: var(--padding-sm);
   text-align: center;
+  p {
+    margin-bottom: var(--padding-sm);
+  }
 }
 
 .error {
-  color: rgb(189, 0, 0);
-  background-color: rgb(249, 191, 191);
+  color: hsl(from var(--error-color) h s calc(l - 30));
+  background-color: hsl(from var(--error-color) h s calc(l + 30));
+}
+
+button {
+  height: 40px;
+  padding-left: var(--padding-sm);
+  padding-right: var(--padding-sm);
+  font-weight: bold;
+  outline: none;
+  border: none;
+}
+
+input {
+  outline: none;
+  border: none;
 }

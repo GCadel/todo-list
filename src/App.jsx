@@ -70,7 +70,7 @@ function App() {
     <div className="todo-app">
       <h1>My Todos</h1>
       <TodoForm onAddTodo={handleAddTodo} isSaving={isSaving} />
-
+      <hr />
       <TodoList
         onCompleteTodo={handleCompleteTodo}
         todoList={todoList}
@@ -87,12 +87,13 @@ function App() {
         setQueryString={setQueryString}
       />
       {errorMessage != '' && (
-        <div>
-          <hr />
-          <p>{errorMessage}</p>
-          <button className="error" onClick={() => setErrorMessage('')}>
-            OK
-          </button>
+        <div className="error-popup">
+          <div className="error-container">
+            <p>{errorMessage}</p>
+            <button className="error" onClick={() => setErrorMessage('')}>
+              OK
+            </button>
+          </div>
         </div>
       )}
     </div>
