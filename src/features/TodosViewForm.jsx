@@ -1,3 +1,5 @@
+import { TextInputWithLabel } from '../shared/TextInputWithLabel';
+
 export default function TodosViewForm({
   sortDirection,
   setSortDirection,
@@ -11,20 +13,19 @@ export default function TodosViewForm({
   }
   return (
     <form className="todos-view-form" onSubmit={preventRefresh}>
-      <div>
-        <label htmlFor="query-search">Search todos:</label>
-        <input
-          type="text"
-          name="query-search"
-          id="query-search"
+      <div className="query-search-container">
+        <TextInputWithLabel
           value={queryString}
           onChange={(e) => setQueryString(e.target.value)}
+          elementId={'query-search'}
+          label={'Search Todos:'}
+          placeholder={'Search Todos'}
         />
         <button type="button" onClick={() => setQueryString('')}>
           Clear
         </button>
       </div>
-      <div>
+      <div className="sort-by-search-container">
         <label htmlFor="sort-by">Sort by</label>
         <select
           name="sort-by"
