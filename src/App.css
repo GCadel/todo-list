@@ -90,12 +90,12 @@ option {
 }
 
 .todo-list {
-  /* margin: var(--padding-sm) 0; */
   .editing {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 40px 40px;
     place-content: center;
+    outline: dashed black 2px;
 
     & .text-label {
       grid-row: 1 / 2;
@@ -107,7 +107,8 @@ option {
     }
 
     & .cancel {
-      background-color: hsl(from var(--neutral-color) h s calc(l + 30));
+      background-color: hsl(from var(--neutral-color) h s calc(l + 15));
+      color: hsl(from var(--neutral-color) h s calc(l - l));
     }
 
     & .confirm {
@@ -165,9 +166,6 @@ option {
   }
   .sort-by-search-container {
     padding: var(--padding-sm);
-
-    /* display: flex;
-    flex-direction: column; */
     display: grid;
     grid-template-columns: 1fr 3fr;
     gap: var(--padding-sm);
@@ -207,6 +205,10 @@ button:disabled,
   p {
     margin-bottom: var(--padding-sm);
   }
+}
+
+.clear-button {
+  color: hsl(from var(--error-color) h s calc(l - 30));
 }
 
 .error {

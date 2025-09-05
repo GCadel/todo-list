@@ -32,8 +32,13 @@ export default function TodosViewForm({
           label={'Search Todos:'}
           placeholder={'Search Todos'}
         />
-        <button type="button" onClick={() => setLocalQueryString('')}>
-          Clear
+        <button
+          type="button"
+          className={localQueryString && 'clear-button'}
+          onClick={() => setLocalQueryString('')}
+          disabled={localQueryString == ''}
+        >
+          Clear Search
         </button>
       </div>
       <div className="sort-by-search-container">
