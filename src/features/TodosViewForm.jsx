@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { TextInputWithLabel } from '../shared/TextInputWithLabel';
 
 export default function TodosViewForm({
@@ -8,6 +9,16 @@ export default function TodosViewForm({
   queryString,
   setQueryString,
 }) {
+  const [localQueryString, setLocalQueryString] = useState(queryString);
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      setQueryString(localQueryString);
+    }, 500);
+
+    return () => clearTimeout(debounce);
+  }, [localQueryString, setQueryString]);
+
   function preventRefresh(event) {
     event.preventDefault();
   }
@@ -15,13 +26,13 @@ export default function TodosViewForm({
     <form className="todos-view-form" onSubmit={preventRefresh}>
       <div className="query-search-container">
         <TextInputWithLabel
-          value={queryString}
-          onChange={(e) => setQueryString(e.target.value)}
+          value={localQueryString}
+          onChange={(e) => setLocalQueryString(e.target.value)}
           elementId={'query-search'}
           label={'Search Todos:'}
           placeholder={'Search Todos'}
         />
-        <button type="button" onClick={() => setQueryString('')}>
+        <button type="button" onClick={() => setLocalQueryString('')}>
           Clear
         </button>
       </div>
