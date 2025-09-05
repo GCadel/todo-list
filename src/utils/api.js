@@ -1,4 +1,4 @@
-const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+export const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
 function encodeUrl(sortField, sortDirection, queryString) {
@@ -21,7 +21,7 @@ async function fetchData(options, sortField, sortDirection, queryString) {
   return await resp.json();
 }
 
-function createPayload(title, isCompleted, id) {
+export function createPayload(title, isCompleted, id) {
   const payload = {
     records: [
       {
@@ -40,7 +40,7 @@ function createPayload(title, isCompleted, id) {
   return payload;
 }
 
-function createOptions(method, payload) {
+export function createOptions(method, payload) {
   const options = {
     method: method,
     headers: {
