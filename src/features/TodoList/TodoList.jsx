@@ -26,7 +26,7 @@ export default function TodoList({
           ))}
         </ul>
       ) : (
-        <p className="todo-list-empty">
+        <p className={styles['todo-list-empty']}>
           {isLoading
             ? 'Todo list loading...'
             : 'Add todo above to get started.'}
