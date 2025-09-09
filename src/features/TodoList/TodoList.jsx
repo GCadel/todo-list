@@ -1,4 +1,5 @@
 import TodoListItem from './TodoListItem';
+import styles from './TodoList.module.css';
 
 export default function TodoList({
   todoList = [],
@@ -14,7 +15,7 @@ export default function TodoList({
   return (
     <>
       {filtered.length > 0 ? (
-        <ul className="todo-list">
+        <ul className={styles['todo-list']}>
           {filtered.map((todo) => (
             <TodoListItem
               key={todo.id}

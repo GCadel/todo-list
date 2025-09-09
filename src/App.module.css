@@ -1,0 +1,17 @@
+.todo-app {
+  background-color: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.49);
+  max-width: 450px;
+  position: relative;
+
+  h1 {
+    text-align: center;
+    background-color: hsl(from var(--base-color) h s calc(l + 10));
+    padding: var(--spacing-md) 0;
+    color: var(--font-color-bold);
+    font-weight: bold;
+    font-size: var(--font-size-extra-large);
+  }
+}

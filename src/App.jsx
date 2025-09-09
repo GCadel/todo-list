@@ -4,6 +4,7 @@ import TodoForm from './features/TodoForm';
 import TodoList from './features/TodoList/TodoList';
 import { addTodo, getAllTodos, updateTodo, url } from './utils/api';
 import TodosViewForm from './features/TodosViewForm';
+import styles from './App.module.css';
 
 function App() {
   const [todoList, setTodoList] = useState([]);
@@ -89,7 +90,7 @@ function App() {
   }
 
   return (
-    <div className="todo-app">
+    <div className={styles['todo-app']}>
       <h1>My Todos</h1>
       <TodoForm onAddTodo={handleAddTodo} isSaving={isSaving} />
       <hr />
