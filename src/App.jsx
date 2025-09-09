@@ -9,7 +9,9 @@ import styles from './App.module.css';
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(
+    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi commodi suscipit a molestias voluptate perspiciatis aliquid distinctio, perferendis quaerat voluptatum cupiditate dolor nihil placeat expedita.'
+  );
   const [isSaving, setIsSaving] = useState(false);
   const [sortField, setSortField] = useState('createdTime');
   const [sortDirection, setSortDirection] = useState('desc');
@@ -110,10 +112,13 @@ function App() {
         setQueryString={setQueryString}
       />
       {errorMessage != '' && (
-        <div className="error-popup">
-          <div className="error-container">
-            <p>{errorMessage}</p>
-            <button className="error" onClick={() => setErrorMessage('')}>
+        <div className={styles['error-popup']}>
+          <div className={styles['error-container']}>
+            <p className={styles['error-message']}>{errorMessage}</p>
+            <button
+              className={styles['error']}
+              onClick={() => setErrorMessage('')}
+            >
               OK
             </button>
           </div>
