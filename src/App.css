@@ -54,36 +54,6 @@ button:disabled,
   background-color: hsl(from var(--neutral-color) h s calc(l + 30));
 }
 
-.error-popup {
-  position: absolute;
-  left: 0;
-  right: 0;
-  background-color: #f3f3f33a;
-  backdrop-filter: blur(8px);
-  bottom: 0;
-  top: 0;
-  display: grid;
-  place-content: center;
-  outline: dashed black 2px;
-}
-
-.error-container {
-  padding: var(--padding-sm);
-  text-align: center;
-  p {
-    margin-bottom: var(--padding-sm);
-  }
-}
-
-.clear-button {
-  color: hsl(from var(--error-color) h s calc(l - 30));
-}
-
-.error {
-  color: hsl(from var(--error-color) h s calc(l - 30));
-  background-color: hsl(from var(--error-color) h s calc(l + 30));
-}
-
 button {
   height: 40px;
   padding-left: var(--padding-sm);

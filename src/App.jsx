@@ -110,10 +110,13 @@ function App() {
         setQueryString={setQueryString}
       />
       {errorMessage != '' && (
-        <div className="error-popup">
-          <div className="error-container">
-            <p>{errorMessage}</p>
-            <button className="error" onClick={() => setErrorMessage('')}>
+        <div className={styles['error-popup']}>
+          <div className={styles['error-container']}>
+            <p className={styles['error-message']}>{errorMessage}</p>
+            <button
+              className={styles['error']}
+              onClick={() => setErrorMessage('')}
+            >
               OK
             </button>
           </div>
