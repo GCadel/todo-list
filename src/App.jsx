@@ -5,13 +5,12 @@ import TodoList from './features/TodoList/TodoList';
 import { addTodo, getAllTodos, updateTodo, url } from './utils/api';
 import TodosViewForm from './features/TodosViewForm';
 import styles from './App.module.css';
+import errorIcon from './assets/error-icon.svg';
 
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(
-    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi commodi suscipit a molestias voluptate perspiciatis aliquid distinctio, perferendis quaerat voluptatum cupiditate dolor nihil placeat expedita.'
-  );
+  const [errorMessage, setErrorMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [sortField, setSortField] = useState('createdTime');
   const [sortDirection, setSortDirection] = useState('desc');
@@ -114,7 +113,10 @@ function App() {
       {errorMessage != '' && (
         <div className={styles['error-popup']}>
           <div className={styles['error-container']}>
-            <p className={styles['error-message']}>{errorMessage}</p>
+            <p className={styles['error-message']}>
+              <img src={errorIcon} alt="error" />
+              {errorMessage}
+            </p>
             <button
               className={styles['error']}
               onClick={() => setErrorMessage('')}

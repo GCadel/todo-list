@@ -48,4 +48,8 @@
 
 .error-message {
   font-size: 1.5rem;
+  img {
+    display: inline-block;
+    margin-right: 5px;
+  }
 }

@@ -9,14 +9,50 @@
   --font-size-normal: 1rem;
   --font-size-small: 0.875rem;
   --padding-sm: 0.5rem;
-  --base-color: hsl(259, 61%, 55%);
+  --base-color: hsl(273, 84%, 44%);
   background-color: hsl(from var(--base-color) h s l);
   --font-color-base: hsl(180, 1%, 20%);
   --font-color-bold: hsl(from var(--font-color-base) h s calc(l - 10));
   --error-color: hsl(0, 82%, 52%);
   --accept-color: hsl(120, 77%, 52%);
   --info-color: hsl(221, 90%, 62%);
-  --neutral-color: hsl(0, 0%, 62%);
+  --neutral-color: hsl(0, 0%, 49%);
+}
+
+body {
+  /* https://www.magicpattern.design/tools/css-backgrounds */
+  background-color: var(--base-color);
+  opacity: 0.8;
+  background:
+    radial-gradient(
+      circle,
+      transparent 20%,
+      var(--base-color) 20%,
+      var(--base-color) 80%,
+      transparent 80%,
+      transparent
+    ),
+    radial-gradient(
+        circle,
+        transparent 20%,
+        var(--base-color) 20%,
+        var(--base-color) 80%,
+        transparent 80%,
+        transparent
+      )
+      80px 80px,
+    linear-gradient(var(--font-color-base) 6.4px, transparent 6.4px) 0 -3.2px,
+    linear-gradient(
+        90deg,
+        var(--font-color-base) 6.4px,
+        var(--base-color) 6.4px
+      ) -3.2px
+      0;
+  background-size:
+    200px 200px,
+    100px 100px,
+    100px 100px,
+    150px 150px;
 }
 
 * {
