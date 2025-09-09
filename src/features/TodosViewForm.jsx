@@ -1,5 +1,19 @@
 import { useEffect, useState } from 'react';
 import { TextInputWithLabel } from '../shared/TextInputWithLabel';
+import styled from 'styled-components';
+
+const StyledForm = styled.form`
+  .query-search-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .sort-by-search-container {
+    padding: var(--padding-sm);
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: var(--padding-sm);
+  }
+`;
 
 export default function TodosViewForm({
   sortDirection,
@@ -23,7 +37,7 @@ export default function TodosViewForm({
     event.preventDefault();
   }
   return (
-    <form className="todos-view-form" onSubmit={preventRefresh}>
+    <StyledForm onSubmit={preventRefresh}>
       <div className="query-search-container">
         <TextInputWithLabel
           value={localQueryString}
@@ -65,6 +79,6 @@ export default function TodosViewForm({
           <option value="desc">Descending</option>
         </select>
       </div>
-    </form>
+    </StyledForm>
   );
 }

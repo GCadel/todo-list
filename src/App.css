@@ -40,49 +40,6 @@ option {
   min-height: 100dvh;
 }
 
-.todo-form {
-  display: flex;
-
-  .text-label {
-    flex-grow: 1;
-    span {
-      display: none;
-    }
-  }
-
-  button:not(:disabled) {
-    background-color: hsl(from var(--accept-color) h s calc(l + 30));
-    color: hsl(from var(--accept-color) h s calc(l - 30));
-  }
-}
-
-.text-label {
-  input {
-    display: block;
-    width: 100%;
-    height: 100%;
-    padding-left: var(--padding-sm);
-    min-height: 40px;
-  }
-
-  span {
-    display: none;
-  }
-}
-
-.todos-view-form {
-  .query-search-container {
-    display: flex;
-    flex-direction: column;
-  }
-  .sort-by-search-container {
-    padding: var(--padding-sm);
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    gap: var(--padding-sm);
-  }
-}
-
 button {
   color: hsl(from var(--neutral-color) h s calc(l - 30));
   background-color: inherit;
