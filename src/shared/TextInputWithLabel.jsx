@@ -4,17 +4,20 @@ export const TextInputWithLabel = ({
   ref,
   onChange,
   value,
+  placeholder,
 }) => {
   return (
-    <>
-      <label htmlFor={elementId}>{label}</label>
+    <label htmlFor={elementId} className="text-label">
+      <span>{label}</span>
+
       <input
         type="text"
         id={elementId}
         ref={ref}
         value={value}
         onChange={onChange}
+        placeholder={placeholder}
       />
-    </>
+    </label>
   );
 };

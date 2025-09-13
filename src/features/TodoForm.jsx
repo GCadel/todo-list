@@ -11,16 +11,20 @@ export default function TodoForm({ onAddTodo, isSaving }) {
     todoTitleInput.current.focus();
   }
   return (
-    <form onSubmit={handleAddTodo}>
+    <form className="todo-form" onSubmit={handleAddTodo}>
       <TextInputWithLabel
         label={'Todo'}
         elementId={'todoTitle'}
         ref={todoTitleInput}
         value={workingTodoTitle}
         onChange={(e) => setWorkingTodoTitle(e.target.value)}
+        placeholder={'Feed pet rock'}
       />
 
-      <button disabled={workingTodoTitle == ''}>
+      <button
+        className={isSaving ? 'saving' : ''}
+        disabled={workingTodoTitle == ''}
+      >
         {isSaving ? 'Saving...' : 'Add Todo'}
       </button>
     </form>

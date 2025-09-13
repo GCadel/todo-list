@@ -14,7 +14,7 @@ export default function TodoList({
   return (
     <>
       {filtered.length > 0 ? (
-        <ul>
+        <ul className="todo-list">
           {filtered.map((todo) => (
             <TodoListItem
               key={todo.id}
@@ -25,7 +25,7 @@ export default function TodoList({
           ))}
         </ul>
       ) : (
-        <p>
+        <p className="todo-list-empty">
           {isLoading
             ? 'Todo list loading...'
             : 'Add todo above to get started.'}

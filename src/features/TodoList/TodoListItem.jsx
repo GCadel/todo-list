@@ -29,31 +29,47 @@ export default function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
   }
 
   return (
-    <li>
-      <form onSubmit={handleUpdate}>
+    <li className="todo-list-item">
+      <form className="todo-item-edit" onSubmit={handleUpdate}>
         {isEditing ? (
-          <>
+          <div className="editing">
             <TextInputWithLabel value={workingTitle} onChange={handleEdit} />
-            <button type="button" onClick={handleCancel}>
+            <button
+              className="button cancel"
+              type="button"
+              onClick={handleCancel}
+            >
               Cancel
             </button>
 
-            <button type="button" onClick={handleUpdate}>
+            <button
+              type="button"
+              className="button confirm"
+              onClick={handleUpdate}
+            >
               Update
             </button>
-          </>
+          </div>
         ) : (
-          <>
-            <label htmlFor={`checkbox${todo.id}`}>
+          <div className="displaying">
+            <label
+              className="todo-item-checkbox"
+              htmlFor={`checkbox${todo.id}`}
+            >
               <input
                 type="checkbox"
                 id={`checkbox${todo.id}`}
                 checked={todo.isCompleted}
-                onChange={() => onCompleteTodo(todo.id)}
+                onChange={() => onCompleteTodo(todo)}
               />
             </label>
-            <span onClick={() => setIsEditing(true)}>{todo.title}</span>
-          </>
+            <span
+              className="todo-item-title"
+              onClick={() => setIsEditing(true)}
+            >
+              {todo.title}
+            </span>
+          </div>
         )}
       </form>
     </li>
