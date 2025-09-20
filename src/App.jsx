@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import TodoForm from './features/TodoForm';
 import TodoList from './features/TodoList/TodoList';
-import { addTodo, getAllTodos, updateTodo } from './utils/api';
+import { addTodo, getAllTodos, updateTodo, url } from './utils/api';
 import TodosViewForm from './features/TodosViewForm';
 
 function App() {
@@ -14,6 +14,24 @@ function App() {
   const [sortDirection, setSortDirection] = useState('desc');
   const [queryString, setQueryString] = useState('');
 
+  const encodeUrl = useCallback(() => {
+    let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+    let searchQuery = '';
+    if (queryString) {
+      searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
+    }
+    return encodeURI(`${url}?${sortQuery}${searchQuery}`);
+  }, [sortField, sortDirection, queryString]);
+
+  async function fetchData(options) {
+    const resp = await fetch(encodeUrl(), options);
+
+    if (!resp.ok) {
+      throw new Error();
+    }
+    return await resp.json();
+  }
+
   useEffect(() => {
     getAllTodos(
       setTodoList,
@@ -21,7 +39,8 @@ function App() {
       setErrorMessage,
       sortField,
       sortDirection,
-      queryString
+      queryString,
+      fetchData
     );
   }, [sortField, sortDirection, queryString]);
 
@@ -34,7 +53,8 @@ function App() {
       setErrorMessage,
       sortField,
       sortDirection,
-      queryString
+      queryString,
+      fetchData
     );
   }
 
@@ -48,7 +68,8 @@ function App() {
       setErrorMessage,
       sortField,
       sortDirection,
-      queryString
+      queryString,
+      fetchData
     );
   }
 
@@ -62,7 +83,8 @@ function App() {
       setErrorMessage,
       sortField,
       sortDirection,
-      queryString
+      queryString,
+      fetchData
     );
   }
 

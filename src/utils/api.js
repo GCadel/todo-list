@@ -1,27 +1,7 @@
-const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+export const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
-function encodeUrl(sortField, sortDirection, queryString) {
-  let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
-  let searchQuery = '';
-  if (queryString) {
-    searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
-  }
-  return encodeURI(`${url}?${sortQuery}${searchQuery}`);
-}
-
-async function fetchData(options, sortField, sortDirection, queryString) {
-  const resp = options
-    ? await fetch(encodeUrl(sortField, sortDirection, queryString), options)
-    : await fetch(encodeUrl(sortField, sortDirection, queryString));
-
-  if (!resp.ok) {
-    throw new Error();
-  }
-  return await resp.json();
-}
-
-function createPayload(title, isCompleted, id) {
+export function createPayload(title, isCompleted, id) {
   const payload = {
     records: [
       {
@@ -40,7 +20,7 @@ function createPayload(title, isCompleted, id) {
   return payload;
 }
 
-function createOptions(method, payload) {
+export function createOptions(method, payload) {
   const options = {
     method: method,
     headers: {
@@ -62,7 +42,8 @@ export async function getAllTodos(
   setErrorMessage,
   sortField,
   sortDirection,
-  queryString
+  queryString,
+  fetchData
 ) {
   setIsLoading(true);
   const options = createOptions('GET');
@@ -102,7 +83,8 @@ export async function addTodo(
   setErrorMessage,
   sortField,
   sortDirection,
-  queryString
+  queryString,
+  fetchData
 ) {
   const newTodo = { title: title, id: Date.now(), isCompleted: false };
   const payload = createPayload(newTodo.title, newTodo.isCompleted);
@@ -124,7 +106,7 @@ export async function addTodo(
     if (!savedTodo.isCompleted) {
       savedTodo.isCompleted = false;
     }
-    setTodoList([...todoList, savedTodo]);
+    setTodoList([savedTodo, ...todoList]);
   } catch (error) {
     setErrorMessage('Failed to create new todo.');
   } finally {
@@ -141,7 +123,8 @@ export async function updateTodo(
   setErrorMessage,
   sortField,
   sortDirection,
-  queryString
+  queryString,
+  fetchData
 ) {
   const originalTodo = todoList.find((item) => item.id == editedTodo.id);
   let updated;
