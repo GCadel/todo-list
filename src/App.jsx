@@ -14,7 +14,7 @@ function App() {
   const [sortDirection, setSortDirection] = useState('desc');
   const [queryString, setQueryString] = useState('');
 
-  const encodeUrlCallback = useCallback(() => {
+  const encodeUrl = useCallback(() => {
     let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
     let searchQuery = '';
     if (queryString) {
@@ -24,7 +24,7 @@ function App() {
   }, [sortField, sortDirection, queryString]);
 
   async function fetchData(options) {
-    const resp = await fetch(encodeUrlCallback(), options);
+    const resp = await fetch(encodeUrl(), options);
 
     if (!resp.ok) {
       throw new Error();
