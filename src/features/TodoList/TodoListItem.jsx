@@ -42,13 +42,7 @@ export default function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
               Cancel
             </button>
 
-            <button
-              type="button"
-              className="button confirm"
-              onClick={handleUpdate}
-            >
-              Update
-            </button>
+            <button className="button confirm">Update</button>
           </div>
         ) : (
           <div className="displaying">
