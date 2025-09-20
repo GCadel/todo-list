@@ -48,7 +48,7 @@ export default function TodosViewForm({
         />
         <button
           type="button"
-          className={localQueryString && 'clear-button'}
+          className={localQueryString ? 'clear-button' : ''}
           onClick={() => setLocalQueryString('')}
           disabled={localQueryString == ''}
         >
