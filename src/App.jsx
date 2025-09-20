@@ -4,6 +4,8 @@ import TodoForm from './features/TodoForm';
 import TodoList from './features/TodoList/TodoList';
 import { addTodo, getAllTodos, updateTodo, url } from './utils/api';
 import TodosViewForm from './features/TodosViewForm';
+import styles from './App.module.css';
+import errorIcon from './assets/error-icon.svg';
 
 function App() {
   const [todoList, setTodoList] = useState([]);
@@ -89,7 +91,7 @@ function App() {
   }
 
   return (
-    <div className="todo-app">
+    <div className={styles['todo-app']}>
       <h1>My Todos</h1>
       <TodoForm onAddTodo={handleAddTodo} isSaving={isSaving} />
       <hr />
@@ -109,10 +111,16 @@ function App() {
         setQueryString={setQueryString}
       />
       {errorMessage != '' && (
-        <div className="error-popup">
-          <div className="error-container">
-            <p>{errorMessage}</p>
-            <button className="error" onClick={() => setErrorMessage('')}>
+        <div className={styles['error-popup']}>
+          <div className={styles['error-container']}>
+            <p className={styles['error-message']}>
+              <img src={errorIcon} alt="error" />
+              {errorMessage}
+            </p>
+            <button
+              className={styles['error']}
+              onClick={() => setErrorMessage('')}
+            >
               OK
             </button>
           </div>
