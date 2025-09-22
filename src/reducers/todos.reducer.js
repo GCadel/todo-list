@@ -29,8 +29,42 @@ function reducer(state = initialState, action) {
         isSaving: false,
       };
     }
-    case actions.updateTodo:
-      return { ...state };
+    case actions.revertTodo:
+    case actions.updateTodo: {
+      const originalTodo = actions.todoList.find(
+        (item) => item.id == actions.editedTodo.id
+      );
+      let updated;
+      const updatedTodos = actions.todoList.map((item) => {
+        if (item.id == actions.editedTodo.id) {
+          updated = { ...actions.editedTodo };
+
+          if (actions.markComplete) {
+            updated.isCompleted = true;
+          }
+
+          return { ...updated };
+        } else {
+          return item;
+        }
+      });
+
+      const updatedState = { ...state, todoList: [...updatedTodos] };
+      if (action.error) {
+        updatedTodos.errorMessage = action.error.message;
+        const revertedTodos = updatedTodos.map((item) => {
+          if (item.id == updated.id) {
+            return originalTodo;
+          } else {
+            return item;
+          }
+        });
+        updatedState.todoList = [...revertedTodos];
+        return updatedState;
+      }
+
+      return { ...state, todoList: [...updatedTodos] };
+    }
     case actions.completeTodo:
       return { ...state };
     case actions.loadTodos:
@@ -50,9 +84,8 @@ function reducer(state = initialState, action) {
     case actions.setLoadError:
       return { ...state, errorMessage: action.error.message, isLoading: false };
     case actions.clearError:
-      return { ...state };
-    case actions.revertTodo:
-      return { ...state };
+      return { ...state, errorMessage: '' };
+
     case actions.endRequest:
       return { ...state, isLoading: false, isSaving: false };
     case actions.startRequest:
