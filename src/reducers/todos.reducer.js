@@ -15,8 +15,20 @@ function reducer(state = initialState, action) {
   switch (action.type) {
     case actions.fetchTodos:
       return { ...state, isLoading: true };
-    case actions.addTodo:
-      return { ...state };
+    case actions.addTodo: {
+      const savedTodo = {
+        id: actions.records[0].id,
+        ...actions.records[0].fields,
+      };
+      if (!savedTodo.isCompleted) {
+        savedTodo.isCompleted = false;
+      }
+      return {
+        ...state,
+        todoList: [savedTodo, ...state.todoList],
+        isSaving: false,
+      };
+    }
     case actions.updateTodo:
       return { ...state };
     case actions.completeTodo:
@@ -42,7 +54,9 @@ function reducer(state = initialState, action) {
     case actions.revertTodo:
       return { ...state };
     case actions.endRequest:
-      return { ...state };
+      return { ...state, isLoading: false, isSaving: false };
+    case actions.startRequest:
+      return { ...state, isSaving: true };
   }
 }
 
