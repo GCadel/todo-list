@@ -100,4 +100,4 @@ const initialState = {
   errorMessage: '',
 };
 
-export { initialState, actions };
+export { initialState, actions, reducer };
