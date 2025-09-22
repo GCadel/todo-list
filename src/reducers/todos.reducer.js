@@ -14,7 +14,7 @@ const actions = {
 function reducer(state = initialState, action) {
   switch (action.type) {
     case actions.fetchTodos:
-      return { ...state };
+      return { ...state, isLoading: true };
     case actions.addTodo:
       return { ...state };
     case actions.updateTodo:
@@ -22,9 +22,21 @@ function reducer(state = initialState, action) {
     case actions.completeTodo:
       return { ...state };
     case actions.loadTodos:
-      return { ...state };
+      return {
+        ...state,
+        todoList: [
+          ...actions.records.map((record) => {
+            const todo = {
+              id: record.id,
+              ...record.fields,
+            };
+            return todo;
+          }),
+        ],
+        isLoading: false,
+      };
     case actions.setLoadError:
-      return { ...state };
+      return { ...state, errorMessage: action.error.message, isLoading: false };
     case actions.clearError:
       return { ...state };
     case actions.revertTodo:
