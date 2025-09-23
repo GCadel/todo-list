@@ -9,7 +9,7 @@
   --font-size-normal: 1rem;
   --font-size-small: 0.875rem;
   --padding-sm: 0.5rem;
-  --base-color: hsl(273, 84%, 44%);
+  --base-color: hsl(267, 84%, 44%);
   background-color: hsl(from var(--base-color) h s l);
   --font-color-base: hsl(180, 1%, 20%);
   --font-color-bold: hsl(from var(--font-color-base) h s calc(l - 10));
@@ -22,7 +22,6 @@
 body {
   /* https://www.magicpattern.design/tools/css-backgrounds */
   background-color: var(--base-color);
-  opacity: 0.8;
   background:
     radial-gradient(
       circle,
