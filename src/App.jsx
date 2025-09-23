@@ -1,15 +1,34 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import './App.css';
 import TodoForm from './features/TodoForm';
 import TodoList from './features/TodoList/TodoList';
 import { addTodo, getAllTodos, updateTodo, url } from './utils/api';
 import TodosViewForm from './features/TodosViewForm';
+import styles from './App.module.css';
+import errorIcon from './assets/error-icon.svg';
+import {
+  reducer as todosReducer,
+  actions as todoActions,
+  initialState as initialTodosState,
+} from './reducers/todos.reducer';
 
 function App() {
-  const [todoList, setTodoList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isSaving, setIsSaving] = useState(false);
+  const [todoState, dispatch] = useReducer(todosReducer, initialTodosState);
+
+  const setTodoList = (data) => {
+    dispatch({ type: todoActions.loadTodos, nextTodoList: data });
+  };
+  const setIsLoading = () => dispatch({ type: todoActions.fetchTodos });
+  const setErrorMessage = (error) =>
+    dispatch({ type: todoActions.setLoadError, error: { message: error } });
+
+  const setIsSaving = (saving) => {
+    if (saving) {
+      dispatch({ type: todoActions.startRequest });
+    } else {
+      dispatch({ type: todoActions.endRequest });
+    }
+  };
   const [sortField, setSortField] = useState('createdTime');
   const [sortDirection, setSortDirection] = useState('desc');
   const [queryString, setQueryString] = useState('');
@@ -47,7 +66,7 @@ function App() {
   async function handleAddTodo(title) {
     await addTodo(
       title,
-      todoList,
+      todoState.todoList,
       setTodoList,
       setIsSaving,
       setErrorMessage,
@@ -62,7 +81,7 @@ function App() {
     await updateTodo(
       false,
       editedTodo,
-      todoList,
+      todoState.todoList,
       setTodoList,
       setIsSaving,
       setErrorMessage,
@@ -77,7 +96,7 @@ function App() {
     await updateTodo(
       true,
       editedTodo,
-      todoList,
+      todoState.todoList,
       setTodoList,
       setIsSaving,
       setErrorMessage,
@@ -89,15 +108,15 @@ function App() {
   }
 
   return (
-    <div className="todo-app">
+    <div className={styles['todo-app']}>
       <h1>My Todos</h1>
-      <TodoForm onAddTodo={handleAddTodo} isSaving={isSaving} />
+      <TodoForm onAddTodo={handleAddTodo} isSaving={todoState.isSaving} />
       <hr />
       <TodoList
         onCompleteTodo={handleCompleteTodo}
-        todoList={todoList}
+        todoList={todoState.todoList}
         onUpdateTodo={handleUpdateTodo}
-        isLoading={isLoading}
+        isLoading={todoState.isLoading}
       />
       <hr />
       <TodosViewForm
@@ -108,11 +127,17 @@ function App() {
         queryString={queryString}
         setQueryString={setQueryString}
       />
-      {errorMessage != '' && (
-        <div className="error-popup">
-          <div className="error-container">
-            <p>{errorMessage}</p>
-            <button className="error" onClick={() => setErrorMessage('')}>
+      {todoState.errorMessage != '' && (
+        <div className={styles['error-popup']}>
+          <div className={styles['error-container']}>
+            <p className={styles['error-message']}>
+              <img src={errorIcon} alt="error" />
+              {todoState.errorMessage}
+            </p>
+            <button
+              className={styles['error']}
+              onClick={() => setErrorMessage('')}
+            >
               OK
             </button>
           </div>

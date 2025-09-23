@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TextInputWithLabel } from '../../shared/TextInputWithLabel';
+import styles from './TodoListItem.module.css';
 
 export default function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -29,25 +30,24 @@ export default function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
   }
 
   return (
-    <li className="todo-list-item">
-      <form className="todo-item-edit" onSubmit={handleUpdate}>
+    <li className={styles['todo-list-item']}>
+      <form className={styles['todo-item-edit']} onSubmit={handleUpdate}>
         {isEditing ? (
-          <div className="editing">
+          <div className={styles['editing']}>
             <TextInputWithLabel value={workingTitle} onChange={handleEdit} />
             <button
-              className="button cancel"
+              className={styles['cancel']}
               type="button"
               onClick={handleCancel}
             >
               Cancel
             </button>
-
             <button className="button confirm">Update</button>
           </div>
         ) : (
-          <div className="displaying">
+          <div className={styles['displaying']}>
             <label
-              className="todo-item-checkbox"
+              className={styles['todo-item-checkbox']}
               htmlFor={`checkbox${todo.id}`}
             >
               <input
@@ -58,7 +58,7 @@ export default function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
               />
             </label>
             <span
-              className="todo-item-title"
+              className={styles['todo-item-title']}
               onClick={() => setIsEditing(true)}
             >
               {todo.title}
