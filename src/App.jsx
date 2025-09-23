@@ -22,7 +22,13 @@ function App() {
   const setErrorMessage = (error) =>
     dispatch({ type: todoActions.setLoadError, error: { message: error } });
 
-  const [isSaving, setIsSaving] = useState(false);
+  const setIsSaving = (saving) => {
+    if (saving) {
+      dispatch({ type: todoActions.startRequest });
+    } else {
+      dispatch({ type: todoActions.endRequest });
+    }
+  };
   const [sortField, setSortField] = useState('createdTime');
   const [sortDirection, setSortDirection] = useState('desc');
   const [queryString, setQueryString] = useState('');
@@ -104,7 +110,7 @@ function App() {
   return (
     <div className={styles['todo-app']}>
       <h1>My Todos</h1>
-      <TodoForm onAddTodo={handleAddTodo} isSaving={isSaving} />
+      <TodoForm onAddTodo={handleAddTodo} isSaving={todoState.isSaving} />
       <hr />
       <TodoList
         onCompleteTodo={handleCompleteTodo}

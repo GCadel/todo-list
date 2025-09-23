@@ -67,22 +67,16 @@ function reducer(state = initialState, action) {
     }
     case actions.completeTodo:
       return { ...state };
-    case actions.loadTodos:
+    case actions.loadTodos: {
       return {
         ...state,
-        todoList: [
-          ...actions.records.map((record) => {
-            const todo = {
-              id: record.id,
-              ...record.fields,
-            };
-            return todo;
-          }),
-        ],
+        todoList: [...action.nextTodoList],
         isLoading: false,
       };
-    case actions.setLoadError:
+    }
+    case actions.setLoadError: {
       return { ...state, errorMessage: action.error.message, isLoading: false };
+    }
     case actions.clearError:
       return { ...state, errorMessage: '' };
 
@@ -90,6 +84,8 @@ function reducer(state = initialState, action) {
       return { ...state, isLoading: false, isSaving: false };
     case actions.startRequest:
       return { ...state, isSaving: true };
+    default:
+      return state;
   }
 }
 
