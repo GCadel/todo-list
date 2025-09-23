@@ -15,9 +15,13 @@ import {
 function App() {
   const [todoState, dispatch] = useReducer(todosReducer, initialTodosState);
 
-  const [todoList, setTodoList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const setTodoList = (data) => {
+    dispatch({ type: todoActions.loadTodos, nextTodoList: data });
+  };
+  const setIsLoading = () => dispatch({ type: todoActions.fetchTodos });
+  const setErrorMessage = (error) =>
+    dispatch({ type: todoActions.setLoadError, error: { message: error } });
+
   const [isSaving, setIsSaving] = useState(false);
   const [sortField, setSortField] = useState('createdTime');
   const [sortDirection, setSortDirection] = useState('desc');
@@ -56,7 +60,7 @@ function App() {
   async function handleAddTodo(title) {
     await addTodo(
       title,
-      todoList,
+      todoState.todoList,
       setTodoList,
       setIsSaving,
       setErrorMessage,
@@ -71,7 +75,7 @@ function App() {
     await updateTodo(
       false,
       editedTodo,
-      todoList,
+      todoState.todoList,
       setTodoList,
       setIsSaving,
       setErrorMessage,
@@ -86,7 +90,7 @@ function App() {
     await updateTodo(
       true,
       editedTodo,
-      todoList,
+      todoState.todoList,
       setTodoList,
       setIsSaving,
       setErrorMessage,
@@ -104,9 +108,9 @@ function App() {
       <hr />
       <TodoList
         onCompleteTodo={handleCompleteTodo}
-        todoList={todoList}
+        todoList={todoState.todoList}
         onUpdateTodo={handleUpdateTodo}
-        isLoading={isLoading}
+        isLoading={todoState.isLoading}
       />
       <hr />
       <TodosViewForm
@@ -117,12 +121,12 @@ function App() {
         queryString={queryString}
         setQueryString={setQueryString}
       />
-      {errorMessage != '' && (
+      {todoState.errorMessage != '' && (
         <div className={styles['error-popup']}>
           <div className={styles['error-container']}>
             <p className={styles['error-message']}>
               <img src={errorIcon} alt="error" />
-              {errorMessage}
+              {todoState.errorMessage}
             </p>
             <button
               className={styles['error']}
