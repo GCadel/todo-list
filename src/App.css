@@ -70,9 +70,17 @@ option {
 }
 
 #root {
-  display: grid;
-  place-content: center;
   min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.centered-content {
+  display: grid;
+
+  flex-grow: 1;
+  place-content: center;
 }
 
 button {
