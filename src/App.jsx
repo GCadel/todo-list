@@ -7,7 +7,7 @@ import { Header } from './shared/Header/Header';
 function App() {
   return (
     <>
-      <Header />
+      <Header title={'Todo List'} />
       <div className="centered-content">
         <TodosPage />;
       </div>
