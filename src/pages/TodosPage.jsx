@@ -110,7 +110,7 @@ export const TodosPage = () => {
   return (
     <div className="centered-content">
       <div className={styles['todo-app']}>
-        <h1>My Todos</h1>
+        <h2>My Todos</h2>
         <TodoForm onAddTodo={handleAddTodo} isSaving={todoState.isSaving} />
         <hr />
         <TodoList

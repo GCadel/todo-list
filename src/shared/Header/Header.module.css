@@ -14,7 +14,7 @@
     hsl(from var(--base-color) h s calc(l + 40)) 70%
   );
   background-clip: text;
-  font-size: 64px;
+  font-size: var(--font-size-extra-large);
   font-weight: 900;
   letter-spacing: 2px;
   text-shadow: none;

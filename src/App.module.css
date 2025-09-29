@@ -6,13 +6,13 @@
   max-width: 450px;
   position: relative;
 
-  h1 {
+  h2 {
     text-align: center;
     background-color: hsl(from var(--base-color) h s calc(l + 10));
     padding: var(--spacing-md) 0;
     color: var(--font-color-bold);
     font-weight: bold;
-    font-size: var(--font-size-extra-large);
+    font-size: var(--font-size-large);
   }
 }
 
