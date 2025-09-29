@@ -73,13 +73,13 @@ option {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 2rem;
+  padding-bottom: 2rem;
 }
 
 .centered-content {
-  display: grid;
-
   flex-grow: 1;
+  display: grid;
   place-content: center;
 }
 

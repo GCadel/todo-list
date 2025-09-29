@@ -1,5 +1,5 @@
+import { Route, Routes } from 'react-router';
 import './App.css';
-import styles from './App.module.css';
 
 import { TodosPage } from './pages/TodosPage';
 import { Header } from './shared/Header/Header';
@@ -8,9 +8,12 @@ function App() {
   return (
     <>
       <Header title={'Todo List'} />
-      <div className="centered-content">
-        <TodosPage />;
-      </div>
+
+      <Routes>
+        <Route path="/" element={<TodosPage />} />
+        <Route path="/about" element={<h1>About</h1>} />
+        <Route path="/*" element={<h1>Not Found!</h1>} />
+      </Routes>
     </>
   );
 }

@@ -108,41 +108,43 @@ export const TodosPage = () => {
   }
 
   return (
-    <div className={styles['todo-app']}>
-      <h1>My Todos</h1>
-      <TodoForm onAddTodo={handleAddTodo} isSaving={todoState.isSaving} />
-      <hr />
-      <TodoList
-        onCompleteTodo={handleCompleteTodo}
-        todoList={todoState.todoList}
-        onUpdateTodo={handleUpdateTodo}
-        isLoading={todoState.isLoading}
-      />
-      <hr />
-      <TodosViewForm
-        setSortDirection={setSortDirection}
-        setSortField={setSortField}
-        sortDirection={sortDirection}
-        sortField={sortField}
-        queryString={queryString}
-        setQueryString={setQueryString}
-      />
-      {todoState.errorMessage != '' && (
-        <div className={styles['error-popup']}>
-          <div className={styles['error-container']}>
-            <p className={styles['error-message']}>
-              <img src={errorIcon} alt="error" />
-              {todoState.errorMessage}
-            </p>
-            <button
-              className={styles['error']}
-              onClick={() => setErrorMessage('')}
-            >
-              OK
-            </button>
+    <div className="centered-content">
+      <div className={styles['todo-app']}>
+        <h1>My Todos</h1>
+        <TodoForm onAddTodo={handleAddTodo} isSaving={todoState.isSaving} />
+        <hr />
+        <TodoList
+          onCompleteTodo={handleCompleteTodo}
+          todoList={todoState.todoList}
+          onUpdateTodo={handleUpdateTodo}
+          isLoading={todoState.isLoading}
+        />
+        <hr />
+        <TodosViewForm
+          setSortDirection={setSortDirection}
+          setSortField={setSortField}
+          sortDirection={sortDirection}
+          sortField={sortField}
+          queryString={queryString}
+          setQueryString={setQueryString}
+        />
+        {todoState.errorMessage != '' && (
+          <div className={styles['error-popup']}>
+            <div className={styles['error-container']}>
+              <p className={styles['error-message']}>
+                <img src={errorIcon} alt="error" />
+                {todoState.errorMessage}
+              </p>
+              <button
+                className={styles['error']}
+                onClick={() => setErrorMessage('')}
+              >
+                OK
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
