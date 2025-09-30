@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TextInputWithLabel } from '../shared/TextInputWithLabel';
 import styled from 'styled-components';
+import { Pagination } from './Pagination/Pagination';
 
 const StyledForm = styled.form`
   .query-search-container {
@@ -38,6 +39,7 @@ export default function TodosViewForm({
   }
   return (
     <StyledForm onSubmit={preventRefresh}>
+      <Pagination />
       <div className="query-search-container">
         <TextInputWithLabel
           value={localQueryString}

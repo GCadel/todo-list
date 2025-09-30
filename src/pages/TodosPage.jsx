@@ -11,6 +11,7 @@ import {
   actions as todoActions,
   initialState as initialTodosState,
 } from '../reducers/todos.reducer';
+import { TodoContext } from '../context/TodoListContext';
 
 export const TodosPage = () => {
   const [todoState, dispatch] = useReducer(todosReducer, initialTodosState);
@@ -120,14 +121,16 @@ export const TodosPage = () => {
           isLoading={todoState.isLoading}
         />
         <hr />
-        <TodosViewForm
-          setSortDirection={setSortDirection}
-          setSortField={setSortField}
-          sortDirection={sortDirection}
-          sortField={sortField}
-          queryString={queryString}
-          setQueryString={setQueryString}
-        />
+        <TodoContext value={todoState}>
+          <TodosViewForm
+            setSortDirection={setSortDirection}
+            setSortField={setSortField}
+            sortDirection={sortDirection}
+            sortField={sortField}
+            queryString={queryString}
+            setQueryString={setQueryString}
+          />
+        </TodoContext>
         {todoState.errorMessage != '' && (
           <div className={styles['error-popup']}>
             <div className={styles['error-container']}>
