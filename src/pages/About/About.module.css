@@ -1,0 +1,39 @@
+h2 {
+  font-size: var(--font-size-large);
+
+  text-align: center;
+  background-color: hsl(from var(--base-color) h s calc(l + 10));
+  padding: var(--spacing-md) 0;
+  color: var(--font-color-bold);
+  font-weight: bold;
+  font-size: var(--font-size-large);
+}
+
+h3 {
+  padding: var(--spacing-md) 0;
+  color: var(--font-color-bold);
+  font-weight: bold;
+  font-size: calc(var(--font-size-large) - 0.5rem);
+}
+
+.card {
+  width: 80%;
+  margin: 0 auto;
+  background-color: white;
+  max-width: 800px;
+  section {
+    padding: 0 2rem;
+  }
+  padding-bottom: 4em;
+
+  a {
+    color: hsl(from var(--font-color-base) h s calc(l + 20));
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+
+    &:hover {
+      color: hsl(from var(--text-color-base) h s calc(l - 10));
+    }
+  }
+}

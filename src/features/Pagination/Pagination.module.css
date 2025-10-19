@@ -1,0 +1,24 @@
+.paginationControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1px;
+
+  button {
+    width: 100px;
+    background-color: hsl(from var(--base-color) h s calc(l + 20));
+    transition: 0.2s;
+    width: 100px;
+    &:disabled {
+      opacity: 50%;
+    }
+
+    &:not(:disabled):hover {
+      background-color: hsl(from var(--base-color) h s calc(l + 30));
+      &:active {
+        transform: scale(0.9);
+        transition: 0.1s;
+      }
+    }
+  }
+}

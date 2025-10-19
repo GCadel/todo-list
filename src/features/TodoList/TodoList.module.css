@@ -4,6 +4,6 @@
 
 .todo-list-empty {
   text-align: center;
-  font-size: var(--font-size-large);
+  font-size: calc(var(--font-size-large) - 1rem);
   padding: var(--padding-sm);
 }
